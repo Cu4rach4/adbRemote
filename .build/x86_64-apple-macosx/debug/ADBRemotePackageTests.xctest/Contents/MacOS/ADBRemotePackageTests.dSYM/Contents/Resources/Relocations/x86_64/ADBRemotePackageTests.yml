@@ -1,5 +1,0 @@
----
-triple:          'x86_64-apple-darwin'
-binary-path:     '/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.xctest/Contents/MacOS/ADBRemotePackageTests'
-relocations:     []
-...
