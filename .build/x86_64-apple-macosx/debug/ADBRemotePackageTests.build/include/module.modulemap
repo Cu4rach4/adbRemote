@@ -1,0 +1,3 @@
+module ADBRemotePackageTests {
+    header "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/include/ADBRemotePackageTests-Swift.h"
+}

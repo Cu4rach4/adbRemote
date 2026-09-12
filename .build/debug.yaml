@@ -1,0 +1,146 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "ADBRemote-x86_64-apple-macosx-debug.exe": ["<ADBRemote-x86_64-apple-macosx-debug.exe>"]
+  "ADBRemote-x86_64-apple-macosx-debug.module": ["<ADBRemote-x86_64-apple-macosx-debug.module>"]
+  "ADBRemotePackageTests-x86_64-apple-macosx-debug.module": ["<ADBRemotePackageTests-x86_64-apple-macosx-debug.module>"]
+  "ADBRemotePackageTests-x86_64-apple-macosx-debug.test": ["<ADBRemotePackageTests-x86_64-apple-macosx-debug.test>"]
+  "ADBRemoteTests-x86_64-apple-macosx-debug.module": ["<ADBRemoteTests-x86_64-apple-macosx-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<ADBRemote-x86_64-apple-macosx-debug.exe>","<ADBRemote-x86_64-apple-macosx-debug.module>"]
+  "test": ["<ADBRemote-x86_64-apple-macosx-debug.exe>","<ADBRemote-x86_64-apple-macosx-debug.module>","<ADBRemotePackageTests-x86_64-apple-macosx-debug.test>","<ADBRemoteTests-x86_64-apple-macosx-debug.module>"]
+default: "main"
+nodes:
+  "/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/jose/Desarrollo/adbremote-mac/Tests/ADBRemoteTests/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote":
+    is-mutated: true
+commands:
+  "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote-entitlement.plist":
+    tool: write-auxiliary-file
+    inputs: ["<entitlement-plist>","<com.apple.security.get-task-allow>"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote-entitlement.plist"]
+    description: "Write auxiliary file /Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote-entitlement.plist"
+
+  "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/ADBClient.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/ADBRemoteApp.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/BonjourADBDiscovery.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/ContentView.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/DeviceDetail.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/DeviceStore.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/Models.swift"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/sources"]
+    description: "Write auxiliary file /Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/sources"
+
+  "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBClient.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBRemoteApp.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/BonjourADBDiscovery.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ContentView.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceDetail.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceStore.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/Models.swift.o"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.product/Objects.LinkFileList"
+
+  "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.derived/runner.swift"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/sources"]
+    description: "Write auxiliary file /Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/sources"
+
+  "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.derived/runner.swift":
+    tool: test-entry-point-tool
+    inputs: []
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.derived/runner.swift"]
+
+  "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBClient.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBRemoteApp.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/BonjourADBDiscovery.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ContentView.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceDetail.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceStore.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/Models.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/runner.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/ADBRemoteTests.swift.o"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.product/Objects.LinkFileList"
+
+  "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/jose/Desarrollo/adbremote-mac/Tests/ADBRemoteTests/ADBRemoteTests.swift"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/sources"]
+    description: "Write auxiliary file /Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/sources"
+
+  "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+
+  "<ADBRemote-x86_64-apple-macosx-debug.exe>":
+    tool: phony
+    inputs: ["<ADBRemote-x86_64-apple-macosx-debug.exe-CodeSigning>"]
+    outputs: ["<ADBRemote-x86_64-apple-macosx-debug.exe>"]
+
+  "<ADBRemote-x86_64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBClient.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBRemoteApp.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/BonjourADBDiscovery.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ContentView.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceDetail.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceStore.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/Models.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemote.swiftmodule"]
+    outputs: ["<ADBRemote-x86_64-apple-macosx-debug.module>"]
+
+  "<ADBRemotePackageTests-x86_64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/runner.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemotePackageTests.swiftmodule"]
+    outputs: ["<ADBRemotePackageTests-x86_64-apple-macosx-debug.module>"]
+
+  "<ADBRemotePackageTests-x86_64-apple-macosx-debug.test>":
+    tool: phony
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.xctest/Contents/MacOS/ADBRemotePackageTests"]
+    outputs: ["<ADBRemotePackageTests-x86_64-apple-macosx-debug.test>"]
+
+  "<ADBRemoteTests-x86_64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/ADBRemoteTests.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemoteTests.swiftmodule"]
+    outputs: ["<ADBRemoteTests-x86_64-apple-macosx-debug.module>"]
+
+  "C.ADBRemote-x86_64-apple-macosx-debug.exe":
+    tool: shell
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBClient.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBRemoteApp.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/BonjourADBDiscovery.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ContentView.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceDetail.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceStore.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/Models.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.product/Objects.LinkFileList"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote"]
+    description: "Linking ./.build/x86_64-apple-macosx/debug/ADBRemote"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-L","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug","-o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote","-module-name","ADBRemote","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-alias","-Xlinker","_ADBRemote_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.product/Objects.LinkFileList","-target","x86_64-apple-macosx26.0","-Xlinker","-add_ast_path","-Xlinker","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemote.swiftmodule","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g"]
+
+  "C.ADBRemote-x86_64-apple-macosx-debug.exe-entitlements":
+    tool: shell
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote-entitlement.plist"]
+    outputs: ["<ADBRemote-x86_64-apple-macosx-debug.exe-CodeSigning>"]
+    description: "Applying debug entitlements to ./.build/x86_64-apple-macosx/debug/ADBRemote"
+    args: ["codesign","--force","--sign","-","--entitlements","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote-entitlement.plist","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote"]
+
+  "C.ADBRemote-x86_64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/ADBClient.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/ADBRemoteApp.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/BonjourADBDiscovery.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/ContentView.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/DeviceDetail.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/DeviceStore.swift","/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/Models.swift","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/sources"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBClient.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBRemoteApp.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/BonjourADBDiscovery.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ContentView.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceDetail.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceStore.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/Models.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemote.swiftmodule"]
+    description: "Compiling Swift Module 'ADBRemote' (7 sources)"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","ADBRemote","-emit-dependencies","-emit-module","-emit-module-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemote.swiftmodule","-output-file-map","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/output-file-map.json","-incremental","-c","@/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/sources","-I","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules","-target","x86_64-apple-macosx26.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/index/store","-Onone","-enable-testing","-j8","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","ADBRemote_main","-swift-version","6","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-Xcc","-F","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","adbremote_mac"]
+
+  "C.ADBRemotePackageTests-x86_64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.derived/runner.swift","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemoteTests.swiftmodule","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/sources"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/runner.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemotePackageTests.swiftmodule"]
+    description: "Compiling Swift Module 'ADBRemotePackageTests' (1 sources)"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","ADBRemotePackageTests","-emit-dependencies","-emit-module","-emit-module-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemotePackageTests.swiftmodule","-output-file-map","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/sources","-I","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules","-target","x86_64-apple-macosx26.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/index/store","-Onone","-enable-testing","-Xfrontend","-enable-cross-import-overlays","-j8","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/include/ADBRemotePackageTests-Swift.h","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-Xcc","-F","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","adbremote_mac"]
+
+  "C.ADBRemotePackageTests-x86_64-apple-macosx-debug.test":
+    tool: shell
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBClient.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ADBRemoteApp.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/BonjourADBDiscovery.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/ContentView.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceDetail.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/DeviceStore.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote.build/Models.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.build/runner.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/ADBRemoteTests.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.product/Objects.LinkFileList"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.xctest/Contents/MacOS/ADBRemotePackageTests"]
+    description: "Linking ./.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.xctest/Contents/MacOS/ADBRemotePackageTests"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-L","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug","-o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.xctest/Contents/MacOS/ADBRemotePackageTests","-module-name","ADBRemotePackageTests","-Xlinker","-no_warn_duplicate_libraries","-Xlinker","-bundle","-Xlinker","-rpath","-Xlinker","@loader_path/../../../","@/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemotePackageTests.product/Objects.LinkFileList","-target","x86_64-apple-macosx26.0","-Xlinker","-add_ast_path","-Xlinker","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemote.swiftmodule","-Xlinker","-add_ast_path","-Xlinker","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemotePackageTests.swiftmodule","-Xlinker","-add_ast_path","-Xlinker","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemoteTests.swiftmodule","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g"]
+
+  "C.ADBRemoteTests-x86_64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/Tests/ADBRemoteTests/ADBRemoteTests.swift","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemote","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/sources"]
+    outputs: ["/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/ADBRemoteTests.swift.o","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemoteTests.swiftmodule"]
+    description: "Compiling Swift Module 'ADBRemoteTests' (1 sources)"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","ADBRemoteTests","-emit-dependencies","-emit-module","-emit-module-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules/ADBRemoteTests.swiftmodule","-output-file-map","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ADBRemoteTests.build/sources","-I","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/Modules","-target","x86_64-apple-macosx26.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/index/store","-Onone","-enable-testing","-Xfrontend","-enable-cross-import-overlays","-j8","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/debug/ModuleCache","-parseable-output","-parse-as-library","-swift-version","6","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-Xcc","-F","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","adbremote_mac"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/jose/Desarrollo/adbremote-mac/Sources/ADBRemote/","/Users/jose/Desarrollo/adbremote-mac/Tests/ADBRemoteTests/","/Users/jose/Desarrollo/adbremote-mac/Package.swift","/Users/jose/Desarrollo/adbremote-mac/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

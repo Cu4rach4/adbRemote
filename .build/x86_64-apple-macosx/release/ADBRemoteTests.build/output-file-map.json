@@ -1,0 +1,13 @@
+{
+  "": {
+    "dependencies": "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/release/ADBRemoteTests.build/ADBRemoteTests.d",
+    "object": "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/release/ADBRemoteTests.build/ADBRemoteTests.o",
+    "swift-dependencies": "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/release/ADBRemoteTests.build/primary.swiftdeps"
+  },
+  "/Users/jose/Desarrollo/adbremote-mac/Tests/ADBRemoteTests/ADBRemoteTests.swift": {
+    "object": "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/release/ADBRemoteTests.build/ADBRemoteTests.swift.o",
+    "swiftmodule": "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/release/ADBRemoteTests.build/ADBRemoteTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/release/ADBRemoteTests.build/ADBRemoteTests.swiftdeps",
+    "diagnostics": "/Users/jose/Desarrollo/adbremote-mac/.build/x86_64-apple-macosx/release/ADBRemoteTests.build/ADBRemoteTests.dia"
+  }
+}
