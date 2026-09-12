@@ -48,7 +48,7 @@ struct DeviceDetail: View {
     private var actionPanel: some View {
         GroupBox("Quick Actions") {
             Grid(horizontalSpacing: 10, verticalSpacing: 10) {
-                GridRow { action("arrow.uturn.backward", "Back", "4"); action("house", "Home", "3"); action("line.3.horizontal", "Menu", "82") }
+                GridRow { action("arrow.uturn.backward", "Back", "KEYCODE_BACK"); action("house", "Home", "KEYCODE_HOME"); action("line.3.horizontal", "Menu", "KEYCODE_MENU") }
                 GridRow { action("return", "Enter", "66"); Button { store.perform({ try await ADBClient.shared.mirror(device.serial) }, success: "Mirroring started") } label: { Label("Mirror", systemImage: "rectangle.on.rectangle") }.disabled(!device.isOnline); Button { capture() } label: { Label("Screenshot", systemImage: "camera") }.disabled(!device.isOnline) }
                 GridRow { Button { showApps = true } label: { Label("Apps", systemImage: "square.grid.2x2") }.disabled(!device.isOnline); Button(role: .destructive) { store.perform({ try await ADBClient.shared.disconnect(device.serial) }, success: "Disconnected") } label: { Label("Disconnect", systemImage: "wifi.slash") }.disabled(!device.serial.contains(":")); EmptyView() }
             }.padding(5)

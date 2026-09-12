@@ -3,7 +3,7 @@ import Foundation
 
 actor ADBClient {
     static let shared = ADBClient()
-    private let executable = URL(fileURLWithPath: "/usr/local/bin/adb")
+    private var mirrorProcesses: [String: Process] = [:]
 
     func devices() async throws -> [AndroidDevice] {
         let result = try await run(["devices", "-l"])
@@ -72,41 +72,53 @@ actor ADBClient {
     func install(_ serial: String, apk: URL) async throws { _ = try await run(["-s", serial, "install", "-r", apk.path]) }
 
     func screenshot(_ serial: String) async throws -> Data {
-        try ensureAvailable()
+        let executable = try adbExecutable()
         let process = Process()
         process.executableURL = executable
         process.arguments = ["-s", serial, "exec-out", "screencap", "-p"]
-        let output = Pipe(); let error = Pipe()
-        process.standardOutput = output; process.standardError = error
-        try process.run(); process.waitUntilExit()
-        let data = output.fileHandleForReading.readDataToEndOfFile()
-        guard process.terminationStatus == 0 else { throw ADBError.commandFailed(String(data: error.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? "Screenshot failed") }
+        let files = try temporaryOutputFiles()
+        defer { files.cleanup() }
+        process.standardOutput = files.output
+        process.standardError = files.error
+        try process.run()
+        process.waitUntilExit()
+        try files.close()
+        let data = try Data(contentsOf: files.outputURL)
+        guard process.terminationStatus == 0 else { throw ADBError.commandFailed(files.errorText) }
+        guard data.count >= 8, data.prefix(8) == Data([137, 80, 78, 71, 13, 10, 26, 10]) else {
+            throw ADBError.commandFailed("ADB did not return a valid PNG screenshot.")
+        }
         return data
     }
 
     func mirror(_ serial: String) throws {
-        let candidates = ["/opt/homebrew/bin/scrcpy", "/usr/local/bin/scrcpy"]
-        guard let command = candidates.first(where: { FileManager.default.isExecutableFile(atPath: $0) }) else {
+        if let existing = mirrorProcesses[serial], existing.isRunning {
+            throw ADBError.commandFailed("Mirroring is already running for this device.")
+        }
+        mirrorProcesses.removeValue(forKey: serial)
+        guard let command = DependencyReport.executable(for: .scrcpy) else {
             throw ADBError.commandFailed("scrcpy is not installed. Install it with Homebrew: brew install scrcpy")
         }
-        let process = Process(); process.executableURL = URL(fileURLWithPath: command); process.arguments = ["-s", serial]
+        let process = Process(); process.executableURL = command; process.arguments = ["-s", serial]
         try process.run()
+        mirrorProcesses[serial] = process
     }
 
     private func run(_ arguments: [String]) async throws -> String {
-        try ensureAvailable()
-        let process = Process(); process.executableURL = executable; process.arguments = arguments
-        let output = Pipe(); let error = Pipe(); process.standardOutput = output; process.standardError = error
-        try process.run(); process.waitUntilExit()
-        let result = String(data: output.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+        let process = Process(); process.executableURL = try adbExecutable(); process.arguments = arguments
+        let files = try temporaryOutputFiles()
+        defer { files.cleanup() }
+        process.standardOutput = files.output; process.standardError = files.error
+        try process.run(); process.waitUntilExit(); try files.close()
+        let result = files.outputText
         guard process.terminationStatus == 0 else {
-            let detail = String(data: error.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? result
+            let detail = files.errorText.isEmpty ? result : files.errorText
             throw ADBError.commandFailed(detail.trimmingCharacters(in: .whitespacesAndNewlines))
         }
         return result
     }
 
-    private func ensureAvailable() throws { guard FileManager.default.isExecutableFile(atPath: executable.path) else { throw ADBError.unavailable } }
+    private func adbExecutable() throws -> URL { guard let executable = DependencyReport.executable(for: .adb) else { throw ADBError.unavailable }; return executable }
     private func validate(host: String, code: String) throws {
         guard host.contains(":") else { throw ADBError.invalidInput("Use host:pairing-port, for example 192.168.1.8:37123.") }
         guard code.range(of: "^[0-9]{6}$", options: .regularExpression) != nil else { throw ADBError.invalidInput("Pairing code must contain six digits.") }
@@ -124,4 +136,25 @@ actor ADBClient {
         _ = try await run(["start-server"])
     }
 
+}
+
+private struct ProcessOutputFiles {
+    let outputURL: URL
+    let errorURL: URL
+    let output: FileHandle
+    let error: FileHandle
+
+    var outputText: String { (try? String(contentsOf: outputURL, encoding: .utf8)) ?? "" }
+    var errorText: String { (try? String(contentsOf: errorURL, encoding: .utf8)) ?? "" }
+    func close() throws { try output.close(); try error.close() }
+    func cleanup() { try? FileManager.default.removeItem(at: outputURL); try? FileManager.default.removeItem(at: errorURL) }
+}
+
+private func temporaryOutputFiles() throws -> ProcessOutputFiles {
+    let directory = FileManager.default.temporaryDirectory
+    let outputURL = directory.appendingPathComponent("adbremote-\(UUID().uuidString).out")
+    let errorURL = directory.appendingPathComponent("adbremote-\(UUID().uuidString).err")
+    FileManager.default.createFile(atPath: outputURL.path, contents: nil)
+    FileManager.default.createFile(atPath: errorURL.path, contents: nil)
+    return try ProcessOutputFiles(outputURL: outputURL, errorURL: errorURL, output: FileHandle(forWritingTo: outputURL), error: FileHandle(forWritingTo: errorURL))
 }

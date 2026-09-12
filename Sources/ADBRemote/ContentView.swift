@@ -50,12 +50,66 @@ struct ContentView: View {
         } message: { Text(store.errorMessage ?? "") }
         .sheet(isPresented: $showPairing) { PairingSheet() }
         .sheet(isPresented: $showAddDevice) { AddDeviceSheet() }
+        .sheet(isPresented: Bindable(store).showDependencySetup) { DependencySetupSheet() }
         .safeAreaInset(edge: .bottom) { statusBar }
     }
 
     private var statusBar: some View {
-        HStack { Circle().fill(store.devices.contains(where: \.isOnline) ? .green : .secondary).frame(width: 8, height: 8); Text(store.status).font(.caption); Spacer(); Text("adb: /usr/local/bin/adb").font(.caption).foregroundStyle(.secondary) }
+        HStack {
+            Circle().fill(store.devices.contains(where: \.isOnline) ? .green : .secondary).frame(width: 8, height: 8)
+            Text(store.status).font(.caption)
+            Spacer()
+            Text(store.dependencies.adb.isAvailable ? "ADB listo" : "ADB no instalado").font(.caption).foregroundStyle(.secondary)
+            Button("Dependencias") { store.showDependencySetup = true }.font(.caption)
+        }
             .padding(.horizontal).padding(.vertical, 7).background(.bar)
+    }
+}
+
+private struct DependencySetupSheet: View {
+    @Environment(DeviceStore.self) private var store
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            Text("Dependencias locales").font(.title2.bold())
+            Text("ADB Remote usa herramientas instaladas localmente. Se comprobaron al abrir la aplicación.")
+                .foregroundStyle(.secondary)
+            dependencyRow(store.dependencies.adb, required: true, command: "brew install --cask android-platform-tools")
+            dependencyRow(store.dependencies.scrcpy, required: false, command: "brew install scrcpy")
+            Divider()
+            Text("Versiones validadas").font(.headline)
+            Text("Android SDK Platform-Tools 37.0.1 (adb 1.0.41) y scrcpy 4.1. Se recomienda usar versiones estables actuales.")
+                .font(.callout).foregroundStyle(.secondary)
+            HStack {
+                Button("Volver a comprobar") { store.refreshDependencies() }
+                Spacer()
+                Button("Listo") { dismiss() }.keyboardShortcut(.defaultAction)
+            }
+        }
+        .padding(28)
+        .frame(width: 590)
+    }
+
+    @ViewBuilder private func dependencyRow(_ dependency: DependencyStatus, required: Bool, command: String) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: dependency.isAvailable ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                .foregroundStyle(dependency.isAvailable ? .green : .orange)
+            VStack(alignment: .leading, spacing: 5) {
+                Text("\(dependency.kind.rawValue)\(required ? " (obligatorio)" : " (para Mirror)")").font(.headline)
+                if let path = dependency.path {
+                    Text(dependency.version ?? "Instalado").font(.callout)
+                    Text(path).font(.caption).foregroundStyle(.secondary).textSelection(.enabled)
+                } else {
+                    Text("No encontrado. Instálalo con Homebrew:").font(.callout)
+                    HStack {
+                        Text(command).font(.system(.caption, design: .monospaced)).textSelection(.enabled)
+                        Button("Copiar") { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(command, forType: .string) }
+                    }
+                }
+            }
+            Spacer()
+        }
     }
 }
 

@@ -1,5 +1,64 @@
 import Foundation
 
+struct DependencyStatus: Identifiable, Sendable {
+    enum Kind: String, Sendable { case adb = "ADB", scrcpy = "scrcpy" }
+
+    let kind: Kind
+    let path: String?
+    let version: String?
+    let detail: String
+
+    var id: Kind { kind }
+    var isAvailable: Bool { path != nil }
+}
+
+struct DependencyReport: Sendable {
+    let adb: DependencyStatus
+    let scrcpy: DependencyStatus
+
+    var requiresSetup: Bool { !adb.isAvailable || !scrcpy.isAvailable }
+
+    static func inspect() -> DependencyReport {
+        DependencyReport(
+            adb: inspect(kind: .adb, candidates: ["/opt/homebrew/bin/adb", "/usr/local/bin/adb"], versionArguments: ["version"]),
+            scrcpy: inspect(kind: .scrcpy, candidates: ["/opt/homebrew/bin/scrcpy", "/usr/local/bin/scrcpy"], versionArguments: ["--version"])
+        )
+    }
+
+    static func executable(for kind: DependencyStatus.Kind) -> URL? {
+        let candidates = kind == .adb ? ["/opt/homebrew/bin/adb", "/usr/local/bin/adb"] : ["/opt/homebrew/bin/scrcpy", "/usr/local/bin/scrcpy"]
+        return findExecutable(candidates: candidates).map { URL(fileURLWithPath: $0) }
+    }
+
+    private static func inspect(kind: DependencyStatus.Kind, candidates: [String], versionArguments: [String]) -> DependencyStatus {
+        guard let path = findExecutable(candidates: candidates) else {
+            return DependencyStatus(kind: kind, path: nil, version: nil, detail: "No instalado")
+        }
+        let version = commandOutput(path: path, arguments: versionArguments)?.split(whereSeparator: \.isNewline).first.map(String.init)
+        return DependencyStatus(kind: kind, path: path, version: version, detail: version ?? "Instalado")
+    }
+
+    private static func findExecutable(candidates: [String]) -> String? {
+        let pathCandidates = (ProcessInfo.processInfo.environment["PATH"] ?? "").split(separator: ":").map { "\($0)/\(candidates[0].split(separator: "/").last!)" }
+        return (candidates + pathCandidates).first { FileManager.default.isExecutableFile(atPath: $0) }
+    }
+
+    private static func commandOutput(path: String, arguments: [String]) -> String? {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: path)
+        process.arguments = arguments
+        let output = Pipe()
+        process.standardOutput = output
+        process.standardError = output
+        do {
+            try process.run()
+            let data = output.fileHandleForReading.readDataToEndOfFile()
+            process.waitUntilExit()
+            return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
+        } catch { return nil }
+    }
+}
+
 struct AndroidDevice: Identifiable, Hashable, Sendable {
     let serial: String
     let state: String
@@ -127,7 +186,7 @@ enum ADBError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .unavailable: "ADB was not found at /usr/local/bin/adb."
+        case .unavailable: "ADB was not found. Install Android SDK Platform-Tools with Homebrew, then use Dependencies to check again."
         case .commandFailed(let detail): detail
         case .invalidInput(let detail): detail
         }

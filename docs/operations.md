@@ -4,8 +4,17 @@
 
 - macOS 26 o posterior.
 - Swift 6 / herramientas de Xcode; Xcode completo para crear y firmar una aplicación distribuible.
-- ADB 1.0.41 o posterior instalado en `/usr/local/bin/adb`.
-- `scrcpy` opcional para espejo de pantalla: `brew install scrcpy`.
+- Android SDK Platform-Tools **37.0.1** (`adb` 1.0.41), versión validada por esta entrega. Se recomienda la versión estable más reciente de Platform-Tools.
+- `scrcpy` **4.1**, versión de referencia para el espejo de pantalla. Se recomienda la versión estable más reciente.
+
+Instalación mediante Homebrew:
+
+```zsh
+brew install --cask android-platform-tools
+brew install scrcpy
+```
+
+Al abrirse, la app busca ambos binarios en Homebrew para Apple Silicon (`/opt/homebrew/bin`), Homebrew para Intel (`/usr/local/bin`) y el `PATH` del proceso. ADB es obligatorio; scrcpy solo lo es para **Mirror**. La pantalla **Dependencias** muestra la ruta y versión detectadas, y permite volver a comprobarlas después de instalar o actualizar.
 - Para depuración inalámbrica, Mac y Android deben poder comunicarse en la misma red local y Android debe tener Wireless debugging activo.
 
 ## Desarrollo y pruebas

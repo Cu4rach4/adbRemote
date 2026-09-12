@@ -20,7 +20,7 @@ Estado documentado: commit `cd6827e` (`first commit`). Las funciones siguientes 
 | Volver, inicio, menú y enter | `adb -s <serial> shell input keyevent <key>` |
 | Enviar texto | `adb -s <serial> shell input text <texto>`; los espacios se codifican como `%s`. |
 | Captura de pantalla | `adb -s <serial> exec-out screencap -p`; se guarda en PNG y copia al portapapeles. |
-| Espejo | Inicia `scrcpy -s <serial>` desde `/opt/homebrew/bin` o `/usr/local/bin`. |
+| Espejo | Inicia y retiene `scrcpy -s <serial>` desde una ruta detectada. Requiere scrcpy. |
 | Instalar APK | Soltar un archivo `.apk` ejecuta `adb -s <serial> install -r <ruta>`. |
 | Activar TCP/IP | `adb -s <serial> tcpip <puerto>`. |
 | Desconectar | `adb disconnect <serial>`; solo se habilita para seriales con `:`. |
@@ -38,7 +38,8 @@ Estado documentado: commit `cd6827e` (`first commit`). Las funciones siguientes 
 
 ## Validaciones y errores
 
-- ADB debe existir y ser ejecutable en `/usr/local/bin/adb`.
+- ADB se localiza en `/opt/homebrew/bin`, `/usr/local/bin` o `PATH`; la versión validada es Android SDK Platform-Tools 37.0.1 (`adb` 1.0.41).
+- Mirror requiere scrcpy 4.1 (versión de referencia). La app detecta y muestra ambas dependencias al inicio, con los comandos Homebrew para instalarlas.
 - Los puertos de conexión deben ser enteros entre 1 y 65535.
 - El código de emparejamiento debe contener exactamente seis dígitos.
 - Los errores de ADB se muestran en la interfaz. Para "No route to host", el mensaje indica revisar Wi-Fi, VPN y aislamiento de clientes.

@@ -10,12 +10,17 @@ final class DeviceStore {
     var isRefreshing = false
     var status = "Ready"
     var errorMessage: String?
+    var dependencies: DependencyReport
+    var showDependencySetup: Bool
     var aliases: [String: String] { didSet { UserDefaults.standard.set(aliases, forKey: "deviceAliases") } }
     var manualDevices: [ManualDevice] { didSet { saveManualDevices() } }
 
     init() {
         aliases = UserDefaults.standard.dictionary(forKey: "deviceAliases") as? [String: String] ?? [:]
         manualDevices = Self.loadManualDevices()
+        let report = DependencyReport.inspect()
+        dependencies = report
+        showDependencySetup = report.requiresSetup
     }
     var selected: AndroidDevice? { devices.first { $0.id == selectedID } }
     func name(for device: AndroidDevice) -> String { aliases[device.serial].flatMap { $0.isEmpty ? nil : $0 } ?? device.displayName }
@@ -35,14 +40,14 @@ final class DeviceStore {
         Task {
             do {
                 try await action()
-                await refresh()
                 status = success
+                Task { await refresh() }
             } catch {
-                await refresh()
                 present(error)
             }
         }
     }
+    func refreshDependencies() { dependencies = DependencyReport.inspect(); showDependencySetup = dependencies.requiresSetup }
     func addManualDevice(name: String, ipAddress: String, port: String) {
         let device = ManualDevice(name: name.trimmingCharacters(in: .whitespacesAndNewlines), ipAddress: ipAddress.trimmingCharacters(in: .whitespacesAndNewlines), port: port)
         guard !manualDevices.contains(where: { $0.endpoint.caseInsensitiveCompare(device.endpoint) == .orderedSame }) else {
